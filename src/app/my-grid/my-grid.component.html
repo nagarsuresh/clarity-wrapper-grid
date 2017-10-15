@@ -1,3 +1,25 @@
-<p>
-  my-grid works!
-</p>
+<clr-datagrid>
+    <!-- draw columns -->
+    <clr-dg-column *ngFor="let column of columns">
+        <ng-container *ngIf="column.headerTemplate; else defaultHeaderTemplate">
+            <ng-container *ngTemplateOutlet="column.headerTemplate"></ng-container>
+        </ng-container>
+
+        <ng-template #defaultHeaderTemplate>{{column.title}}</ng-template>
+
+    </clr-dg-column>
+
+    <!-- draw rows with custom or default renders -->
+    <clr-dg-row *ngFor="let row of rows">
+        <clr-dg-cell *ngFor="let column of columns">
+            <ng-container *ngIf="column.templateRef; else defaultRenderer">
+                <ng-container *ngTemplateOutlet="column.templateRef; context:{rowData: row} "></ng-container>
+            </ng-container>
+
+            <ng-template #defaultRenderer>
+                <span> {{row[column.dataField]}} </span>
+            </ng-template>
+        </clr-dg-cell>
+
+    </clr-dg-row>
+</clr-datagrid>
